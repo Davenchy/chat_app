@@ -19,6 +19,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 io.on('connection', (socket) => {
     console.log('user was connected');
 
+    socket.emit('newMessage', {
+        from: "Davenchy",
+        text: "Hey maia",
+        time: Date.now()
+    });
+
+    socket.on('createMessage', (data) => {
+        console.log("Message:", data);
+    });
+
     socket.on('disconnect', (socket) => {
         console.log('user was disconnected');
     });
