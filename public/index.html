@@ -8,7 +8,13 @@
 </head>
 <body>
     <h1>Chat APP</h1>
+    <hr>
+    <div id="messages"></div>
+    <form>
+        <input type="text" name="message"><input type="submit" value="Send" hidden>
+    </form>
 
+    <script src="/js/libs/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js"></script>
 
