@@ -63,12 +63,12 @@ function sendlocation(e) {
     $('#messages').append(status);
 
     // get the location and send it as a message
-    navigator.geolocation.getCurrentPosition(function (position) {
+    navigator.geolocation.getCurrentPosition(function (p) {
 
         status.text("Sending data....");
 
         // create text
-        var text = `Geo Location: ${position.latitude}, ${position.longitude}`;
+        var text = `Geo Location: ${p.coords.latitude}, ${p.coords.longitude}`;
         // print the text to the screen
         createMessage(name, text);
         // emit the message to the server
