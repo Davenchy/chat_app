@@ -19,22 +19,27 @@ app.use(bodyParser.urlencoded({extended: true}));
 io.on('connection', (socket) => {
     console.log('user was connected');
 
-    socket.emit("newMessage", {
-        from: "Server",
-        text: "Welcome to our chat room!",
-        time: Date.now()
+    socket.on('newuser', function (data) {
+        socket.name = data.name;
+
+        socket.emit("newMessage", {
+            from: "Server",
+            text: `Welcome ${socket.name} to our chat room!`,
+            time: Date.now()
+        });
+
+        socket.broadcast.emit("newMessage", {
+            from: "Server",
+            text: `${socket.name} was joined!`,
+            time: Date.now()
+        });
     });
 
-    socket.broadcast.emit("newMessage", {
-        from: "Server",
-        text: "New user was joined!",
-        time: Date.now()
-    });
 
     socket.on('createMessage', function (data) {
         console.log("Send Message");
         socket.broadcast.emit('newMessage', {
-           from: data.from,
+           from: socket.name,
            text: data.text,
            time: Date.now()
         });

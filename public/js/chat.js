@@ -20,43 +20,53 @@ socket.on('newMessage', function (message) {
 $(document).ready(function () {
     name = prompt("What is your name?", "User");
 
+    $("#title").text($("#title").text() + " - " + name);
+    socket.emit("newuser", {name});
+
     // on messages form submit new message
     $('form').on('submit', function (e) {
-        console.log('hello');
         // prevent page refresh
         e.preventDefault();
         // get the message
-        var msg = $('[name=message]').val();
+        var text = $('[name=message]').val();
         // clear the text input
         $('[name=message]').val('');
         // emit the message to the server
-        socket.emit('createMessage', {
-            from: name,
-            text: msg
-        });
+        socket.emit('createMessage', {text});
         // print message to the screen
-        createMessage('me', msg);
+        createMessage('me', text);
     });
 
 });
 
-
+// print message to screen
 function createMessage(from, text) {
+    // create new p element
     var msg = $('<p></p>');
+    // change inner text
     msg.text(`${from}: ${text}`);
+    // append to the document
     $('#messages').append(msg);
 }
 
 
+// send current user location
 function sendlocation(e) {
+    // check if the browser support the geolocation future
     if (!navigator.geolocation) return alert("Your browser is not supported!");
 
     alert("please wait...");
 
+    // get the location and send it as a message
     navigator.geolocation.getCurrentPosition(function (position) {
-        alert(position);
-        createMessage(name, `Geo Location: ${position.latitude}, ${position.longitude}`);
+        // create text
+        var text = `Geo Location: ${position.latitude}, ${position.longitude}`;
+        // print the text to the screen
+        createMessage(name, text);
+        // emit the message to the server
+        socket.emit('createMessage', {text})
     }, function () {
+        // if can not get the location data
         alert('Unable to get your location');
     });
 
