@@ -46,3 +46,18 @@ function createMessage(from, text) {
     msg.text(`${from}: ${text}`);
     $('#messages').append(msg);
 }
+
+
+function sendlocation(e) {
+    if (!navigator.geolocation) return alert("Your browser is not supported!");
+
+    alert("please wait...");
+
+    navigator.geolocation.getCurrentPosition(function (position) {
+        alert(position);
+        createMessage(name, `Geo Location: ${position.latitude}, ${position.longitude}`);
+    }, function () {
+        alert('Unable to get your location');
+    });
+
+}
