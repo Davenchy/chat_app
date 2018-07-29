@@ -55,10 +55,18 @@ function sendlocation(e) {
     // check if the browser support the geolocation future
     if (!navigator.geolocation) return alert("Your browser is not supported!");
 
-    alert("please wait...");
+    // create p element to print status
+    var status = $('<p id="status"></p>');
+    status.text("Collecting geo location data...");
+
+    // append to the document
+    $('#messages').append(status);
 
     // get the location and send it as a message
     navigator.geolocation.getCurrentPosition(function (position) {
+
+        status.text("Sending data....");
+
         // create text
         var text = `Geo Location: ${position.latitude}, ${position.longitude}`;
         // print the text to the screen
@@ -67,7 +75,7 @@ function sendlocation(e) {
         socket.emit('createMessage', {text})
     }, function () {
         // if can not get the location data
-        alert('Unable to get your location');
+        status.text('Unable to get your location');
     });
 
 }
