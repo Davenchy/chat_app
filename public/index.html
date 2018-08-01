@@ -6,17 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/css/master.css">
 </head>
-<body>
-    <h1 id="title">Chat APP</h1>
-    <hr>
-    <div id="messages"></div>
-    <form>
-        <input type="text" name="message"><input type="submit" value="Send" hidden>
-        <input type="button" value="Send Location" onclick="sendlocation();">
-    </form>
+<body class="chat">
+    <!-- <h1 id="title">Chat APP</h1> -->
+
+    <div class="chat__sidebar">
+        <h3>People</h3>
+        <div id="users">
+
+        </div>
+    </div>
+
+    <div class="chat__main">
+
+        <div id="messages" class="chat__messages"></div>
+
+        <div class="chat__footer">
+
+            <form>
+                <input type="text" name="message" placeholder="Message OR Command, for help write '$help()'" autofocus autocomplete="off">
+                <button type="submit" id="send_btn">Send</button>
+            </form>
+            <button id="Location_btn">Send Location</button>
+        </div>
+
+
+    </div>
+
+
 
     <script src="/js/libs/jquery.js"></script>
+    <script src="/js/libs/moment.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/middleware.js"></script>
     <script src="/js/chat.js"></script>
 
 </body>

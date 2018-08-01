@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const socketIO = require('socket.io');
+const moment = require('moment');
 
 const publicPath = path.join(__dirname, '../public');
 const PORT = process.env.PORT || 3000;
@@ -31,22 +32,32 @@ io.on('connection', (socket) => {
         socket.broadcast.emit("newMessage", {
             from: "Server",
             text: `${socket.name} was joined!`,
-            time: Date.now()
+            time: getTime()
         });
     });
 
 
-    socket.on('createMessage', function (data) {
+    socket.on('createMessage', function (data, next) {
         console.log("Send Message");
         socket.broadcast.emit('newMessage', {
            from: socket.name,
            text: data.text,
-           time: Date.now()
+           time: getTime()
         });
+        next(getTime());
     });
+
+    socket.on('disconnect', function () {
+        socket.broadcast.emit('newMessage', {
+            from: "Server",
+            text: `${socket.name} leaved the room!`,
+            time: getTime()
+        })
+    })
 
 });
 
+function getTime() { return moment().valueOf(); }
 
 
 
